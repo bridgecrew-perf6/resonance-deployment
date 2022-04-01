@@ -1,0 +1,34 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+build:
+  artifacts:
+    - image: resonance-backend
+      ko:
+        env:
+          - KO_DOCKER_REPO=shadadelic
+      context: ../resonance-backend
+    - image: resonance-frontend
+      context: ../resonance-frontend
+deploy:
+  helm:
+    releases:
+      - name: resonance
+        chartPath: resonance
+        artifactOverrides:
+          frontend.image: resonance-frontend
+          backend.image: resonance-backend
+        imageStrategy:
+          helm: {}
+portForward:
+  - resourceType: deployment
+    resourceName: resonance
+    namespace: default
+    port: 8080
+  - resourceType: deployment
+    resourceName: resonance
+    namespace: default
+    port: 8000
+  - resourceType: statefulset
+    resourceName: resonance-postgresql
+    namespace: default
+    port: 5432

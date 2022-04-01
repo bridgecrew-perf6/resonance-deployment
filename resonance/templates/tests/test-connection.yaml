@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "resonance.fullname" . }}-test-connection"
+  labels:
+    {{- include "resonance.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "resonance.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

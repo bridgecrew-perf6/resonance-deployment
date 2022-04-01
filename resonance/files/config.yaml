@@ -1,0 +1,6 @@
+postgresql:
+  host: resonance-postgresql
+  port: 5432
+  username: resonance-user
+  password: resonance-password
+  database: resonance
